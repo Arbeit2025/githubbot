@@ -17,3 +17,8 @@ bug / enhancement / documentation / question（多くは既定で存在）、nee
 ## 注意点
 - stale は 60日無活動＋14日で自動クローズする。古い Issue があるリポジトリでは導入直後から対象になり得るため、B分類と古い Issue のある所は個別確認。
 - ワークフローファイルは API から書けない（403）ため、各リポジトリともブラウザ画面からのアップロードになる。16件＋PR4件は複数回に分けて実施する。
+
+## 実施結果（2026-10-29）
+- A分類16件（githubbot を含む）への導入が完了。ラベル16種・labeler・dependabot（Actions週次）・ワークフロー3本（issue-triage は自動付与オン、pr-labeler、stale）を全件に導入し、issue-triage.yml の blob（11547b83）が配布版と全リポジトリで一致することを読み戻し確認済み。
+- B分類4件（Studylog系）は未実施。ai/muse ブランチ＋PR 方式で別途行う。
+- 新規リポジトリの検知は週次チェック（cron: githubbot-weekly-repo-check、毎週月曜）で報告される。自動適用はされない。
