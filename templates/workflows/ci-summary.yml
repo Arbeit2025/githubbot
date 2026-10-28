@@ -1,0 +1,24 @@
+# Copy to a target repo: .github/workflows/ci-summary.yml
+# When any CI workflow fails on a PR branch, post one summary comment.
+# Pair with your existing CI workflow name in `workflows:` below.
+name: CI failure summary
+on:
+  workflow_run:
+    workflows: ['CI']        # <-- rename to your CI workflow's name
+    types: [completed]
+permissions:
+  pull-requests: write
+jobs:
+  summary:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+            const prs = run.pull_requests || [];
+            for (const pr of prs) {
+              await github.rest.issues.createComment({...context.repo, issue_number: pr.number,
+                body: `CI が失敗しました: [${run.name}](${run.html_url}) — ログを確認してください。`});
+            }
