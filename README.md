@@ -1,4 +1,4 @@
-# githubbot
+# githubbot👁️👁️🎥
 
 自分の GitHub リポジトリを自動整理する Bot のスターターキット。
 常駐サーバーを持たない GitHub Actions 式で、Issue 整理・PR ラベル・CI 連携を行う。
