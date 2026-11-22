@@ -7,6 +7,7 @@
 - `bot/triage.py` — dry-run 専用 CLI。実行してもリポジトリは変更されない
 - `templates/workflows/` — 対象リポジトリへコピーするワークフロー雛形（Issue triage、PR labeler、stale、CI失敗通知）
 - `templates/config/` — labeler と Dependabot の設定雛形
+- `templates/dependabot-auto-merge.yml` — Dependabot PR 自動マージのワークフロー雛形（導入手順は `docs/dependabot-auto-merge.md`）
 - `docs/design.md` — 方式比較と安全の既定値 / `docs/install.md` — 導入手順
 
 ## ローカル検証
