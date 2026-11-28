@@ -48,11 +48,20 @@ Studylog 系の次のリポジトリには、このワークフローを置か�
 - `dependabot/fetch-metadata` で Dependabot の PR であることを確認したうえで、
   `gh pr merge --auto --merge`（`GH_TOKEN` = ワークフローの `GITHUB_TOKEN`）で
   auto-merge を有効化する。実際のマージは GitHub 側が行う。
+- **リトライ（2026-11-28 追加）**：auto-merge の有効化は、一時的な API エラー
+  （502 Bad Gateway 等）で失敗しても黙って終わらず、30 秒間隔で最大 3 回まで再試行する。
+  2026-11-25 に plotbox #5 が 502 の一発失敗で 3 日間滞留した事故を受けた対策。
+- **日次スイープ（2026-11-28 追加）**：`schedule`（毎日 04:23 UTC = 13:23 JST）と
+  `workflow_dispatch`（手動実行）で起動する `sweep` ジョブが、そのリポジトリの
+  オープンな Dependabot PR のうち、非 Draft かつ auto-merge 未設定のものを拾い、
+  auto-merge を有効化し直す。PR イベントの発火失敗や、ワークフロー配置前に
+  開かれた PR の取りこぼし（2026-11-26 に新規リポ 9 件で発生）を自己修復する。
 
 ## 注意
 
-- 既にオープンしている PR には遡って効かない。対象にしたい場合は PR を
-  一度 close して reopen するか、次の Dependabot PR から適用されるのを待つ。
+- PR イベントを取りこぼした PR も、日次スイープが最大で約 1 日遅れで拾い直す。
+  急ぐ場合は Actions 画面からこのワークフローを手動実行（workflow_dispatch）する。
 - 競合している PR は自動マージされず、そのまま残る（手動対応が必要）。
+  スイープは auto-merge の有効化までで、競合そのものは解消しない。
 - 止めたいときは、対象リポジトリの `.github/workflows/dependabot-auto-merge.yml` を
   削除するか、Actions 画面でワークフローを無効化する。
